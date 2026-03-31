@@ -51,7 +51,7 @@ export default function ToolDetailPage({
       {/* Navigation */}
       <div className="bg-slate-900/50 border-b border-slate-700/50 sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justified-between">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-gray-400">
               <Link href="/ai-tools" className="hover:text-blue-400 transition">
                 AI Tools
@@ -67,6 +67,7 @@ export default function ToolDetailPage({
               <BackButton label="Back" className="text-sm" />
             </div>
           </div>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
