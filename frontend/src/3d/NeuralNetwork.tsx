@@ -65,7 +65,7 @@ const NetworkNodes: React.FC = () => {
       }
     }
     return new Float32Array(positions);
-  }, []);
+  }, [nodes]);
 
   return (
     <group>

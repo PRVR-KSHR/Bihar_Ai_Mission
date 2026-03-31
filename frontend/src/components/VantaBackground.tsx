@@ -3,9 +3,9 @@
 import React, { useEffect, useRef } from "react";
 
 declare global {
-  namespace window {
-    var VANTA: any;
-    var THREE: any;
+  interface Window {
+    VANTA?: any;
+    THREE?: any;
   }
 }
 
