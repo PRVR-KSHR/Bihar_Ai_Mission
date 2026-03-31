@@ -9,7 +9,9 @@ dist/
 build/
 .next/
 out/
-public/
+/public/
+!frontend/public/
+!frontend/public/**
 
 # Environment variables
 .env
