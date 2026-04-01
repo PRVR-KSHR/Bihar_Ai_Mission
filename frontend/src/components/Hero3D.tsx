@@ -57,18 +57,6 @@ export const Hero3D = () => {
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         {/* Background Image */}
-        <div 
-          className="absolute bg-contain bg-center bg-no-repeat opacity-20 pointer-events-none"
-          style={{
-            backgroundImage: "url('/hero-bg.png')",
-            backgroundPosition: "center",
-            width: "850px",
-            height: "850px",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
         
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center max-w-4xl relative z-10">
           <h1 className="text-5xl sm:text-7xl font-bold font-grotesk mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">

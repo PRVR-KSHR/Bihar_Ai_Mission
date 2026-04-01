@@ -10,7 +10,8 @@ export const useProtectedRoute = (redirectUrl?: string) => {
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      const callbackUrl = redirectUrl || window.location.pathname;
+      const callbackUrl =
+        redirectUrl || `${window.location.pathname}${window.location.search}`;
       router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
     }
   }, [isAuthenticated, loading, router, redirectUrl]);

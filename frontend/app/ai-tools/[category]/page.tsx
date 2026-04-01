@@ -4,32 +4,15 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { aiTools, categories } from "@/data/aiTools";
-import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 import BackButton from "@/components/BackButton";
 
 export default function CategoryPage({ params }: { params: { category: string } }) {
-  const { isAuthenticated, loading } = useProtectedRoute();
   const categorySlug = params.category;
   const categoryData = categories.find((c) => c.slug === categorySlug);
   const categoryTools = useMemo(
     () => aiTools.filter((tool) => tool.category === categoryData?.name),
     [categoryData?.name]
   );
-
-  if (loading) {
-    return (
-      <div className="w-full pt-24 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   if (!categoryData) {
     return (
@@ -60,7 +43,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
   return (
     <div className="w-full pt-24">
       {/* Header */}
-      <section className="py-12 bg-gradient-to-b from-transparent to-slate-900/50">
+      <section className="py-12 bg-gradient-to-b from-transparent to-slate-900/50 reveal-on-scroll">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <BackButton label="Back to All Tools" className="mb-6" />
 
@@ -84,7 +67,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
       </section>
 
       {/* Tools Grid */}
-      <section className="py-16 bg-gradient-to-b from-slate-900/50 to-transparent">
+      <section className="py-16 bg-gradient-to-b from-slate-900/50 to-transparent reveal-on-scroll">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={container}
@@ -132,7 +115,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
       </section>
 
       {/* Related Categories */}
-      <section className="py-16 bg-slate-900/30">
+      <section className="py-16 bg-slate-900/30 reveal-on-scroll">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-8 text-center">
             Explore Other Categories

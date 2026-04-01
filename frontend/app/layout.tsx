@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import VantaBackground from "@/components/VantaBackground";
+import AppProviders from "@/components/AppProviders";
+import ScrollRevealRoot from "@/components/ScrollRevealRoot";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -49,10 +50,11 @@ export default function RootLayout({
       </head>
       <body className="bg-ai-bg text-white font-inter overflow-x-hidden">
         <VantaBackground />
-        <AuthProvider>
+        <AppProviders>
           <Navbar />
+          <ScrollRevealRoot />
           <main className="relative">{children}</main>
-        </AuthProvider>
+        </AppProviders>
       </body>
     </html>
   );

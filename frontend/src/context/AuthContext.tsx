@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -15,6 +15,7 @@ interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   login: (callbackUrl?: string) => void;
+  loginAsDemo: (callbackUrl?: string) => void;
   logout: () => void;
   checkAuth: () => Promise<void>;
 }
@@ -28,23 +29,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Initialize auth from localStorage
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
+  const readStoredUser = useCallback((): User | null => {
+    try {
+      const raw = localStorage.getItem("user");
+      if (!raw) return null;
+      return JSON.parse(raw) as User;
+    } catch {
+      return null;
+    }
   }, []);
+
+  useEffect(() => {
+    const stored = readStoredUser();
+    setUser(stored);
+    setLoading(false);
+  }, [readStoredUser]);
 
   const login = (callbackUrl?: string) => {
     // Redirect to login page with callback URL
@@ -52,31 +51,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     router.push(url);
   };
 
+  const loginAsDemo = (callbackUrl?: string) => {
+    const demoUser: User = {
+      id: "demo-user-1",
+      name: "Demo User",
+      email: "demo@biharaimission.gov.in",
+      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=demo",
+    };
+
+    try {
+      localStorage.setItem("user", JSON.stringify(demoUser));
+    } catch {
+      // ignore
+    }
+
+    setUser(demoUser);
+    router.push(callbackUrl || "/");
+  };
+
   const logout = () => {
-    localStorage.removeItem("user");
+    try {
+      localStorage.removeItem("user");
+    } catch {
+      // ignore
+    }
     setUser(null);
     router.push("/");
   };
 
   const checkAuth = async () => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    } catch (error) {
-      console.error("Auth check error:", error);
-    }
+    const stored = readStoredUser();
+    setUser(stored);
   };
 
-  const value: AuthContextType = {
-    user,
-    loading,
-    isAuthenticated: !!user,
-    login,
-    logout,
-    checkAuth,
-  };
+  const value: AuthContextType = useMemo(
+    () => ({
+      user,
+      loading,
+      isAuthenticated: !!user,
+      login,
+      loginAsDemo,
+      logout,
+      checkAuth,
+    }),
+    [user, loading]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
