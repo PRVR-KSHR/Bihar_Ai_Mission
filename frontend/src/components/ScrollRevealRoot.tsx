@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function ScrollRevealRoot() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -32,10 +35,14 @@ export default function ScrollRevealRoot() {
       }
     );
 
-    for (const element of elements) observer.observe(element);
+    for (const element of elements) {
+      // Reset state for newly navigated pages
+      element.classList.remove("is-revealed");
+      observer.observe(element);
+    }
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   return null;
 }

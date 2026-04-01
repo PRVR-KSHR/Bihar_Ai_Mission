@@ -14,6 +14,11 @@ const Navbar = () => {
 
   useEffect(() => {
     setMounted(true);
+
+    // On mobile/tablet, open the menu by default so options are visible.
+    if (typeof window !== "undefined" && window.innerWidth <= 1024) {
+      setIsOpen(true);
+    }
   }, []);
 
   const navItems = useMemo(
